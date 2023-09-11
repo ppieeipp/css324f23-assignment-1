@@ -11,15 +11,19 @@ def is_goal(s):
 
 def successors(s):
     _, r, c = s
+    #up
     new_r, new_c = r-1, c
     if is_valid(new_r, new_c):
         yield move_blank(s, new_r, new_c), 1
+    #down
     new_r, new_c = r+1, c
     if is_valid(new_r, new_c):
         yield move_blank(s, new_r, new_c), 1
+    #left
     new_r, new_c = r, c-1
     if is_valid(new_r, new_c):
         yield move_blank(s, new_r, new_c), 1
+    #right
     new_r, new_c = r, c+1
     if is_valid(new_r, new_c):
         yield move_blank(s, new_r, new_c), 1
@@ -49,6 +53,22 @@ def h1(s):
     return res
 
 def h3(s):
-    # implement this function
+    # Implement the Manhattan distance heuristic
     board, _, _ = s
-    return 0
+    goal = (1, 2, 3, 4, 5, 6, 7, 8, 0)
+    
+    h_value = 0
+    for tile in range(1, 9):
+        current_r, current_c = get_position(board, tile)
+        goal_r, goal_c = get_position(goal, tile)
+        h_value += abs(current_r - goal_r) + abs(current_c - goal_c)
+    
+    return h_value
+
+def get_position(board, tile):
+    # Helper function to get the row and column of a tile in the board
+    idx = board.index(tile)
+    return idx // 3, idx % 3
+
+
+
